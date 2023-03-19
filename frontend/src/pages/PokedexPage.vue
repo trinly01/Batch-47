@@ -10,12 +10,16 @@
     <!-- <input type="text" v-model="textSearch" /> -->
   </q-toolbar>
 
-  <div>
-    <q-card class="my-card">
-      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+  <div class="row">
+    <q-card v-for="poke in pokemons" :key="poke.id" class="my-card">
+      <q-img :src="poke.data.sprites.other['official-artwork'].front_default">
         <div class="absolute-bottom">
-          <div class="text-h6">Our Changing Planet</div>
-          <div class="text-subtitle2">by John Doe</div>
+          <div class="text-h6">{{ poke.name }}</div>
+          <div class="text-subtitle2">
+            <q-chip v-for="t in poke.data.types" :key="t.type.name">
+              {{ t.type.name }}
+            </q-chip>
+          </div>
         </div>
       </q-img>
 
@@ -28,8 +32,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 const textSearch = ref('Hello Batch 47')
+
+const host = 'https://pokeapi.co/api/v2/pokemon'
+
+const pokemons = ref([])
+
+onMounted(async () => {
+  // create a fetch request that will get pokemons from https://pokeapi.co/api/v2/pokemon
+  pokemons.value = await getPokemons()
+})
+
+async function getPokemons () {
+  const { results: pokes } = await (await fetch(host)).json()
+  console.log(pokes)
+  for (const pokemon of pokes) {
+    pokemon.data = await getPokeData(pokemon.url)
+  }
+  console.log('pokemonsssss', pokes)
+  return pokes
+}
+
+async function getPokeData (url) {
+  return await (await fetch(url)).json()
+}
 </script>
 
 <style scoped>
