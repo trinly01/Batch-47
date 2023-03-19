@@ -12,7 +12,7 @@
   <div class="row justify-center">
     {{ filteredPokemons.length }}
     <q-select style="width: 320px;"
-    outlined v-model="pokeType" :options="types" label="Type" />
+    outlined v-model="state.pokeType" :options="types" label="Type" />
   </div>
 
   <div class="row q-gutter-sm q-pa-md justify-center">
@@ -45,13 +45,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 const textSearch = ref('Hello Batch 47')
 
 const host = 'https://pokeapi.co/api/v2/pokemon'
 
 const pokemons = ref([])
-const pokeType = ref('all')
+
+const state = reactive({
+  pokeType: 'all',
+  pokemons
+})
 const types = [
   'all',
   'grass',
@@ -62,15 +66,15 @@ const types = [
 ]
 
 const filteredPokemons = computed(() => {
-  if (pokeType.value === 'all') return pokemons.value
-  return pokemons.value.filter(poke => {
-    return poke.data.types.map(t => t.type.name).includes(pokeType.value)
+  if (state.pokeType === 'all') return state.pokemons
+  return state.pokemons.filter(poke => {
+    return poke.data.types.map(t => t.type.name).includes(state.pokeType)
   })
 })
 
 onMounted(async () => {
   // create a fetch request that will get pokemons from https://pokeapi.co/api/v2/pokemon
-  pokemons.value = await getPokemons()
+  state.pokemons = await getPokemons()
 })
 
 async function getPokemons () {
