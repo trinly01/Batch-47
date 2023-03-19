@@ -9,9 +9,14 @@
     <q-input placeholder="Search" dark dense standout v-model="textSearch" input-class="text-right" class="q-ml-md" />
     <!-- <input type="text" v-model="textSearch" /> -->
   </q-toolbar>
+  <div class="row justify-center">
+    {{ filteredPokemons.length }}
+    <q-select style="width: 320px;"
+    outlined v-model="pokeType" :options="types" label="Type" />
+  </div>
 
-  <div class="row">
-    <q-card v-for="poke in pokemons" :key="poke.id" class="my-card">
+  <div class="row q-gutter-sm q-pa-md justify-center">
+    <q-card v-for="poke in filteredPokemons" :key="poke.id" class="my-card">
       <q-img :src="poke.data.sprites.other['official-artwork'].front_default">
         <div class="absolute-bottom">
           <div class="text-h6">{{ poke.name }}</div>
@@ -40,12 +45,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 const textSearch = ref('Hello Batch 47')
 
 const host = 'https://pokeapi.co/api/v2/pokemon'
 
 const pokemons = ref([])
+const pokeType = ref('all')
+const types = [
+  'all',
+  'grass',
+  'water',
+  'fire',
+  'flying',
+  'bug'
+]
+
+const filteredPokemons = computed(() => {
+  if (pokeType.value === 'all') return pokemons.value
+  return pokemons.value.filter(poke => {
+    return poke.data.types.map(t => t.type.name).includes(pokeType.value)
+  })
+})
 
 onMounted(async () => {
   // create a fetch request that will get pokemons from https://pokeapi.co/api/v2/pokemon
