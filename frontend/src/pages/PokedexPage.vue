@@ -15,18 +15,23 @@
       <q-img :src="poke.data.sprites.other['official-artwork'].front_default">
         <div class="absolute-bottom">
           <div class="text-h6">{{ poke.name }}</div>
-          <div class="text-subtitle2">
-            <q-chip v-for="t in poke.data.types" :key="t.type.name">
-              {{ t.type.name }}
-            </q-chip>
+          <div class="text-subtitle2 row">
+            <div v-for="t in poke.data.types" :key="t.type.name">
+              <q-chip v-if="t.type.name === 'grass'" color="green" class="text-white">{{ t.type.name }}</q-chip>
+              <q-chip v-else-if="t.type.name === 'poison'" class="bg-purple text-white">{{ t.type.name }}</q-chip>
+              <q-chip v-else-if="t.type.name === 'fire'" class="bg-red text-white">{{ t.type.name }}</q-chip>
+              <q-chip v-else-if="t.type.name === 'water'" class="bg-blue text-white">{{ t.type.name }}</q-chip>
+              <q-chip v-else>{{ t.type.name }}</q-chip>
+
+            </div>
           </div>
         </div>
       </q-img>
 
-      <q-card-actions>
+      <!-- <q-card-actions>
         <q-btn flat>Action 1</q-btn>
         <q-btn flat>Action 2</q-btn>
-      </q-card-actions>
+      </q-card-actions> -->
     </q-card>
   </div>
 </template>
