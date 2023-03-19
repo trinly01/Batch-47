@@ -17,12 +17,15 @@
           <div class="text-h6">{{ poke.name }}</div>
           <div class="text-subtitle2 row">
             <div v-for="t in poke.data.types" :key="t.type.name">
-              <q-chip v-if="t.type.name === 'grass'" color="green" class="text-white">{{ t.type.name }}</q-chip>
-              <q-chip v-else-if="t.type.name === 'poison'" class="bg-purple text-white">{{ t.type.name }}</q-chip>
-              <q-chip v-else-if="t.type.name === 'fire'" class="bg-red text-white">{{ t.type.name }}</q-chip>
-              <q-chip v-else-if="t.type.name === 'water'" class="bg-blue text-white">{{ t.type.name }}</q-chip>
-              <q-chip v-else>{{ t.type.name }}</q-chip>
-
+              <q-chip
+              class="text-white"
+              :class="{
+                'bg-red': t.type.name === 'fire',
+                'bg-green': t.type.name === 'grass',
+                'bg-purple': t.type.name === 'poison',
+                'bg-blue': t.type.name === 'water',
+                'bg-white text-grey-9': t.type.name === 'flying'
+              }">{{ t.type.name }}</q-chip>
             </div>
           </div>
         </div>
