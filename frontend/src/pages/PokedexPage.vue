@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref, onMounted, computed, reactive } from 'vue'
-const textSearch = ref('Hello Batch 47')
+const textSearch = ref('')
 
 const host = 'https://pokeapi.co/api/v2/pokemon'
 
@@ -66,9 +66,10 @@ const types = [
 ]
 
 const filteredPokemons = computed(() => {
-  if (state.pokeType === 'all') return state.pokemons
+  if (state.pokeType === 'all' && !textSearch.value) return state.pokemons
+  if (state.pokeType === 'all') return state.pokemons.filter(p => p.name.includes(textSearch.value))
   return state.pokemons.filter(poke => {
-    return poke.data.types.map(t => t.type.name).includes(state.pokeType)
+    return poke.data.types.map(t => t.type.name).includes(state.pokeType) && poke.name.includes(textSearch.value)
   })
 })
 
