@@ -18,7 +18,7 @@
   </div>
 
   <div class="row q-gutter-sm q-pa-md justify-center">
-    <poke-card v-for="poke in state.searchedPokemons" :key="poke.id" :poke="poke" v-model="counter">
+    <poke-card v-for="poke in state.searchedPokemons" :key="'page' + poke.id" :poke="poke" v-model="counter">
     </poke-card>
     {{ counter }}
   </div>

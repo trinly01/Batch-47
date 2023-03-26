@@ -4,7 +4,7 @@
       <div class="absolute-bottom">
         <div class="text-h6">{{ poke.name }}</div>
         <div class="text-subtitle2 row">
-          <div v-for="t in poke.data.types" :key="t.type.name">
+          <div v-for="t in poke.data.types" :key=" poke.data.id + t.type.name">
             <q-chip
             class="text-white"
             :class="{
@@ -30,8 +30,8 @@
   </q-card>
 </template>
 <script setup>
-import { cart, store } from 'stores/cart.js'
-import { reactive, nextTick, toRaw, onMounted } from 'vue'
+import { store } from 'stores/cart.js'
+import { reactive, nextTick, onMounted } from 'vue'
 
 const props = defineProps({
   poke: Object,
@@ -51,19 +51,24 @@ const emit = defineEmits(['delete', 'update:modelValue'])
 
 async function remove () {
   console.log('props.index', props.index)
-  const cartTemp = toRaw(cart)
-  console.log('cartTemp', cartTemp)
-  cartTemp.splice(props.index, 1)
-  console.log('cart', cartTemp)
-  store.cart = cartTemp
+  // const cartTemp = toRaw(cart)
+  // console.log('cartTemp', cartTemp)
+  // cartTemp.splice(props.index, 1)
+  // const cart = toRaw(store.cart)
   await nextTick()
   emit('delete', props.poke)
+  await nextTick()
+  store.cart.splice(props.index, 1)
+  await nextTick()
+  await nextTick()
+  console.log('store.cart', store.cart)
+  await nextTick()
 }
 
 const poke = reactive(props.poke)
 
 function addToCart () {
-  cart.push({ ...props.poke, quantity: 1 })
+  store.cart.push({ ...props.poke, quantity: 1 })
 }
 </script>
 <style scoped>
