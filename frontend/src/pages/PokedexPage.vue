@@ -17,36 +17,14 @@
   </div>
 
   <div class="row q-gutter-sm q-pa-md justify-center">
-    <q-card v-for="poke in state.searchedPokemons" :key="poke.id" class="my-card">
-      <q-img :src="poke.data.sprites.other['official-artwork'].front_default">
-        <div class="absolute-bottom">
-          <div class="text-h6">{{ poke.name }}</div>
-          <div class="text-subtitle2 row">
-            <div v-for="t in poke.data.types" :key="t.type.name">
-              <q-chip
-              class="text-white"
-              :class="{
-                'bg-red': t.type.name === 'fire',
-                'bg-green': t.type.name === 'grass',
-                'bg-purple': t.type.name === 'poison',
-                'bg-blue': t.type.name === 'water',
-                'bg-white text-grey-9': t.type.name === 'flying'
-              }">{{ t.type.name }}</q-chip>
-            </div>
-          </div>
-        </div>
-      </q-img>
-
-      <!-- <q-card-actions>
-        <q-btn flat>Action 1</q-btn>
-        <q-btn flat>Action 2</q-btn>
-      </q-card-actions> -->
-    </q-card>
+    <poke-card v-for="poke in state.searchedPokemons" :key="poke.id" :poke="poke">
+    </poke-card>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, reactive } from 'vue'
+import PokeCard from 'src/components/PokeCard.vue'
 const textSearch = ref('')
 
 const host = 'https://pokeapi.co/api/v2/pokemon'
@@ -108,10 +86,3 @@ async function getPokeData (url) {
   return await (await fetch(url)).json()
 }
 </script>
-
-<style scoped>
-.my-card {
-  width: 100%;
-  max-width: 250px;
-}
-</style>
