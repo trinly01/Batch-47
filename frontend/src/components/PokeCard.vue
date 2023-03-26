@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :src="poke.data.sprites.other['official-artwork'].front_default">
+    <q-img style="height: 100px;" :src="poke.data.sprites.other['official-artwork'].front_default">
       <div class="absolute-bottom">
         <div class="text-h6">{{ poke.name }}</div>
         <div class="text-subtitle2 row">
@@ -20,20 +20,34 @@
     </q-img>
 
     <q-card-actions class="justify-end">
-      <q-btn color="deep-orange" icon="add_shopping_cart">Add to cart</q-btn>
+      <q-btn v-if="!props.hideAddButton" @click="addToCart" color="deep-orange" icon="add_shopping_cart">Add to cart</q-btn>
+      <q-input v-else type="number" label="quantity" v-model="poke.quantity" ></q-input>
       <!-- <q-btn flat>Action 2</q-btn> -->
     </q-card-actions>
   </q-card>
 </template>
 <script setup>
-defineProps({
-  poke: Object
+import { cart } from 'stores/cart.js'
+import { reactive } from 'vue'
+
+const props = defineProps({
+  poke: Object,
+  hideAddButton: {
+    type: Boolean,
+    default: false
+  }
 })
 
+const poke = reactive(props.poke)
+
+function addToCart () {
+  cart.push({ ...props.poke, quantity: 1 })
+}
 </script>
 <style scoped>
 .my-card {
-  width: 100%;
-  max-width: 250px;
+  width: 250px;
+  /* width: 250px;
+  max-width: 250px; */
 }
 </style>
