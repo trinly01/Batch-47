@@ -5,3 +5,4 @@ const state = reactive({
 })
 
 export const cart = state.cart
+export const store = state

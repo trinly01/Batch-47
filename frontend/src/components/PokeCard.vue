@@ -21,22 +21,44 @@
 
     <q-card-actions class="justify-end">
       <q-btn v-if="!props.hideAddButton" @click="addToCart" color="deep-orange" icon="add_shopping_cart">Add to cart</q-btn>
-      <q-input v-else type="number" label="quantity" v-model="poke.quantity" ></q-input>
-      <!-- <q-btn flat>Action 2</q-btn> -->
+      <div v-else class="row">
+        <q-input type="number" label="quantity" v-model="poke.quantity" ></q-input>
+        <q-btn round icon="delete" color="red" @click="remove"></q-btn>
+      </div>
+      <q-btn flat @click="emit('update:modelValue', props.modelValue + 1)">-{{ props.modelValue }}-</q-btn>
     </q-card-actions>
   </q-card>
 </template>
 <script setup>
-import { cart } from 'stores/cart.js'
-import { reactive } from 'vue'
+import { cart, store } from 'stores/cart.js'
+import { reactive, nextTick, toRaw, onMounted } from 'vue'
 
 const props = defineProps({
   poke: Object,
+  index: Number,
   hideAddButton: {
     type: Boolean,
     default: false
-  }
+  },
+  modelValue: Number
 })
+
+onMounted(() => {
+  console.log('props', props)
+})
+
+const emit = defineEmits(['delete', 'update:modelValue'])
+
+async function remove () {
+  console.log('props.index', props.index)
+  const cartTemp = toRaw(cart)
+  console.log('cartTemp', cartTemp)
+  cartTemp.splice(props.index, 1)
+  console.log('cart', cartTemp)
+  store.cart = cartTemp
+  await nextTick()
+  emit('delete', props.poke)
+}
 
 const poke = reactive(props.poke)
 
