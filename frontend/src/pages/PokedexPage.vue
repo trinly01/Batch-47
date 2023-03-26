@@ -18,7 +18,8 @@
   </div>
 
   <div class="row q-gutter-sm q-pa-md justify-center">
-    <poke-card v-for="poke in state.searchedPokemons" :key="'page' + poke.id" :poke="poke" v-model="counter">
+    <poke-card v-for="poke in state.searchedPokemons"
+    :key="'page' + poke.id" :poke="poke" v-model="counter">
     </poke-card>
     {{ counter }}
   </div>
@@ -28,7 +29,7 @@
 import { ref, onMounted, computed, reactive } from 'vue'
 import PokeCard from 'src/components/PokeCard.vue'
 const textSearch = ref('')
-const counter = ref(0)
+const counter = ref(10)
 
 const host = 'https://pokeapi.co/api/v2/pokemon'
 
