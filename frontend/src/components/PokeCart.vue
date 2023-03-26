@@ -1,12 +1,18 @@
 <template>
   <q-btn flat class="bg-purple-8 q-ml-md" round dense icon="shopping_cart" >
     <q-popup-proxy>
-      <q-banner>
-        <template v-slot:avatar>
-          <q-icon name="signal_wifi_off" color="primary" />
-        </template>
-        You have lost connection to the internet. This app is offline.
-      </q-banner>
+      <div class="column">
+        <poke-card v-for="poke in state.searchedPokemons" :key="poke.id" :poke="poke">
+        </poke-card>
+      </div>
     </q-popup-proxy>
+    <q-badge color="red" floating>{{ cart.length }}</q-badge>
   </q-btn>
 </template>
+
+<script setup>
+import { cart } from 'stores/cart'
+
+import PokeCard from 'components/PokeCard.vue'
+console.log('cart', cart)
+</script>
