@@ -9,6 +9,7 @@
     <q-input @keyup.enter="triggerSearch" placeholder="Search" dark dense standout v-model="textSearch" input-class="text-right" class="q-ml-md" />
     <!-- <input type="text" v-model="textSearch" /> -->
     <q-btn @click="triggerSearch" flat class="bg-purple-8 q-ml-md" round dense icon="search" />
+    <poke-cart></poke-cart>
   </q-toolbar>
   <div class="row justify-center">
     {{ filteredPokemons.length }}
