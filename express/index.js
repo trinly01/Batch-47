@@ -11,6 +11,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/sum', (req, res) => {
-    console.log('req.params', req.query.params)
-    res.send('hello Batch 47!')
+    console.log('req.query', req.query)
+    res.send(req.query)
+})
+
+app.get('/sum/:num1/:num2', (req, res) => {
+    console.log('req.params', req.params)
+    res.send(req.params)
 })
