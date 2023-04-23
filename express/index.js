@@ -15,7 +15,25 @@ app.set('views', './views')
 
 port = 3002
 
+const jobs = [
+    {
+        id: Date.now(),
+        name: 'Frontend Developer'
+    }
+]
+
 app.listen(port, () => console.log('running in port '+ port))
+
+app.post('/jobs', (req, res) => {
+
+    jobs.push({
+        id: Date.now(),
+        name: req.body.name
+    })
+    res.send('new Job created!')
+})
+
+app.get('/jobs', (req, res) => res.json(jobs))
 
 app.get('/', (req, res) => {
     res.send('hello Batch 47!')
