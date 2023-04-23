@@ -6,6 +6,9 @@ const app = express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.set('view engine', 'ejs')
+app.set('views', './views')
+
 port = 3002
 
 app.listen(port, () => console.log('running in port '+ port))
@@ -21,7 +24,9 @@ app.get('/sum', (req, res) => {
 
 app.get('/sum/:num1/:num2', (req, res) => {
     console.log('req.params', req.params)
-    res.send(req.params)
+    // res.send(req.params)
+
+    res.render('sum', req.params)
 })
 
 app.post('/sum', (req, res) => {
