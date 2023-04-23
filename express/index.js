@@ -1,12 +1,16 @@
 const express = require('express')
 const axios = require('axios')
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
+const { engine } = require('express-handlebars')
 
 const app = express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.set('view engine', 'ejs')
+app.engine('handlebars', engine({
+    defaultLayout: null
+}))
+app.set('view engine', 'handlebars')
 app.set('views', './views')
 
 port = 3002
@@ -26,7 +30,13 @@ app.get('/sum/:num1/:num2', (req, res) => {
     console.log('req.params', req.params)
     // res.send(req.params)
 
-    res.render('sum', req.params)
+    const { num1, num2 } = req.params
+
+    res.render('sumHBS', {
+        num1, 
+        num2, 
+        answer: +num1 + +num2 
+    })
 })
 
 app.post('/sum', (req, res) => {
